@@ -23,25 +23,17 @@ class App extends Component {
 class Test extends Component {
   static contextType = demoContent;
   render() {
-    return this.context;
+    return (
+      <div style={{ display: "flex", height: "100vh" }}>
+        <div style={{ width: 100, backgroundColor: "red", height: "100vh" }}>
+          {this.context}
+        </div>
+        <div style={{ flex: 2, backgroundColor: "green", height: "100vh" }}>
+          {this.context}
+        </div>
+      </div>
+    );
   }
 }
-
-// function App() {
-//   const a = [];
-//   return createPortal(
-//     a.length && <div />,
-//     document.getElementsByTagName("body")[0]
-//   );
-// }
-
-// const Repeat = (props) => {
-//   const { times, children } = props;
-//   const item = [];
-//   for (let index = 0; index <= times; index++) {
-//     item.push(children(index));
-//   }
-//   return <div>{item}</div>;
-// };
 
 export default App;
