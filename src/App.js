@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { createPortal } from "react-dom";
 import "./App.css";
 import demoContent from "./demoContent";
 
