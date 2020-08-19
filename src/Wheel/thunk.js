@@ -1,7 +1,7 @@
 const createThunk = () => {
-  return (dispatch, state) => (next) => (action) => {
+  return (dispatch, getState) => (next) => (action) => {
     if (typeof action === "function") {
-      return dispatch(action, state);
+      return action(dispatch, getState);
     }
     return next(action);
   };
