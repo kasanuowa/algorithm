@@ -1,7 +1,6 @@
 function myNew(constructor) {
-  let obj = {};
-  obj.setPrototypeOf(constructor.prototype);
-  let args = arguments.slice(1);
+  let obj = Object.create(constructor.prototype);
+  let args = [].slice.call(arguments, 1);
   let res = constructor.apply(obj, args);
   let isObject = typeof res === "object" && res !== null;
   let isFunction = typeof res === "function";
