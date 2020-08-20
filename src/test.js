@@ -87,3 +87,19 @@ Function.prototype.myNew = function (Construe, ...args) {
   }
   return obj;
 };
+
+const greedy = (g, s) => {
+  g = g.sort((a, b) => b - a);
+  s = s.sort((a, b) => b - a);
+  let cookie = 0;
+  let child = 0;
+  let count = 0;
+  while (cookie < g.length && child < s.length) {
+    if (s[child] <= g[cookie]) {
+      count++;
+      child++;
+    }
+    cookie++;
+  }
+  return count;
+};
