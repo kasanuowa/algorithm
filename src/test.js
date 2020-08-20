@@ -103,3 +103,26 @@ const greedy = (g, s) => {
   }
   return count;
 };
+
+const debounce = (fn, delay) => {
+  let timer = null;
+  return function (...args) {
+    timer && clearTimeout(timer);
+    timer = setTimeout(() => {
+      fn.call(this, ...args);
+    }, delay);
+  };
+};
+
+const throttle = (fn, delay) => {
+  let timer = null;
+  return function (...args) {
+    if (!timer) {
+      timer = setTimeout(() => {
+        fn.call(this, ...args);
+        clearTimeout(timer);
+        timer = null;
+      }, delay);
+    }
+  };
+};
