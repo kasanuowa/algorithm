@@ -77,17 +77,6 @@ const insertSort = array => {
   return array;
 };
 
-Function.prototype.myNew = function (Construe, ...args) {
-  let obj = Object.create(Construe.prototype);
-  let res = Construe.call(obj, ...args);
-  const isObj = typeof res === "object" && res !== null;
-  const isFn = typeof res === "function";
-  if (isObj || isFn) {
-    return res;
-  }
-  return obj;
-};
-
 const greedy = (g, s) => {
   g = g.sort((a, b) => b - a);
   s = s.sort((a, b) => b - a);
@@ -125,4 +114,17 @@ const throttle = (fn, delay) => {
       }, delay);
     }
   };
+};
+
+Function.prototype.myNew = function (Construe) {
+  const obj = Object.create(Construe.prototype);
+  const args = [].slice.call(arguments, 1);
+  const res = Construe.apply(obj, args);
+  const isObject = typeof res === "object" && res !== null;
+  const isFunction = typeof res === "function";
+  if (isObject && isFunction) {
+    return res;
+  } else {
+    return obj;
+  }
 };

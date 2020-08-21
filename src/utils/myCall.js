@@ -8,3 +8,10 @@ Function.prototype.myCall = function (Content, ...args) {
   delete Content[fn];
   return res;
 };
+
+Function.prototype.myBind = function (Content, ...args) {
+  const _this = this;
+  return function () {
+    _this.call(Content, ...args);
+  };
+};
