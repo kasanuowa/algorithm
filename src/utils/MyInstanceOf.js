@@ -1,13 +1,19 @@
 function MyInstanceOf(obj, Construe) {
-  let pro = Object.getPrototypeOf(Construe);
+  const baseType = ["string", "number", "boolean", "undefined", "symbol"];
+  if (baseType.includes(typeof obj)) {
+    return false;
+  }
+
+  let pro = Construe.prototype;
+  let _pro_ = Object.getPrototypeOf(obj);
   while (true) {
-    if (pro === null) {
+    if (_pro_ === null) {
       return false;
     }
-    if (pro === Construe.prototype) {
+    if (pro === _pro_) {
       return true;
     }
-    pro = Object.getPrototypeOf(pro);
+    _pro_ = Object.getPrototypeOf(_pro_);
   }
 }
 
