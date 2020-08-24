@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import "./App.css";
 import demoContent from "./demoContent";
+import { testa } from "./index";
+
+export const testb = [4, 5, 6];
 
 class App extends Component {
   aa = () => {
@@ -25,7 +28,7 @@ class Test extends Component {
     return (
       <div style={{ display: "flex", height: "100vh" }}>
         <div style={{ width: 100, backgroundColor: "red", height: "100vh" }}>
-          {this.context}
+          {testa}
         </div>
         <div style={{ flex: 2, backgroundColor: "green", height: "100vh" }}>
           {this.context}

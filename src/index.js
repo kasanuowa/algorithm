@@ -4,6 +4,10 @@ import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import demoContent from "./demoContent";
+import { testb } from "./App";
+
+export const testa = [1, 2, 3];
+console.log(testb);
 
 ReactDOM.render(
   <React.StrictMode>
