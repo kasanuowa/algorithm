@@ -120,3 +120,24 @@ const insertSort = array => {
   }
   return array;
 };
+
+const createStore = (enhancer, reducer) => {
+  if (typeof enhancer !== undefined) {
+    return enhancer(createStore)(reducer);
+  }
+  const licenses = [];
+  let state = null;
+
+  const subScript = license => {
+    licenses.push(license);
+  };
+
+  const getState = () => state;
+
+  const dispatch = action => {
+    state = reducer(action, state);
+    licenses.forEach(item => item());
+  };
+
+  return { subScript, getState, dispatch };
+};
