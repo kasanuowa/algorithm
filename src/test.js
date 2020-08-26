@@ -71,3 +71,52 @@ const slideWindow = k => {
   }
   return res;
 };
+
+const bubbleSort = array => {
+  for (let i = 0; i < array.length; i++) {
+    let flag = true;
+    for (let j = 0; j < array.length - i - 1; j++) {
+      if (array[j] > array[j + 1]) {
+        [array[j], array[j + 1]] = [array[j + 1], array[j]];
+        flag = false;
+      }
+    }
+    if (flag) {
+      break;
+    }
+  }
+  return array;
+};
+
+const quickSort = array => {
+  if (array.length < 2) {
+    return array;
+  }
+  let target = array[0];
+  const left = [];
+  const right = [];
+  for (let i = 0; i < array.length; i++) {
+    if (array[i] > target) {
+      right.push(array[i]);
+    } else {
+      left.push(array[i]);
+    }
+  }
+
+  return [...quickSort(left), target, ...quickSort(right)];
+};
+
+const insertSort = array => {
+  for (let i = 0; i < array.length; i++) {
+    let max_index = i;
+    for (let j = i - 1; j >= 0; j--) {
+      if (array[max_index] < array[j]) {
+        [array[j], array[max_index]] = [array[max_index], array[j]];
+        max_index = j;
+      } else {
+        break;
+      }
+    }
+  }
+  return array;
+};

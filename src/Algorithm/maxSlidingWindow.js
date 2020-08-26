@@ -6,7 +6,7 @@ const maxSlidingWindow = (array, k) => {
   }
   const res = [];
   let l_index = 0;
-  let r_index = l_index + k;
+  let r_index = k;
   while (r_index <= array.length) {
     res.push(Math.max.apply(null, array.slice(l_index, r_index)));
     l_index++;

@@ -1,12 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
-import App from "./App";
+import App, { testb } from "./App";
 import * as serviceWorker from "./serviceWorker";
 import demoContent from "./demoContent";
-import { testb } from "./App";
 
-export const testa = [1, 2, 3];
+export const testa = () => {};
 console.log(testb);
 
 ReactDOM.render(
