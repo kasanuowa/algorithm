@@ -1,143 +1,39 @@
-Function.prototype.myCall = function (Construe, ...args) {
-  if (typeof Construe !== "object") {
-    throw new Error("6666");
-  }
-  const fn = Symbol();
-  Construe[fn] = this;
-  const res = Construe[fn](...args);
-  delete Construe[fn];
-  return res;
-};
-
-Function.prototype.myBind = function (Construe, ...args) {
-  if (typeof Construe !== "object") {
-    throw new Error("6666");
-  }
-  const _this = this;
-  return function () {
-    _this.call(Construe, ...args);
-  };
-};
-
-const mergeSort = array => {
-  if (array.length < 2) {
-    return array;
-  }
-  let index = Math.floor(array.length / 2);
-  let left = array.slice(0, index);
-  let right = array.slice(index);
-  return merge(mergeSort(left), mergeSort(right));
-};
-
-const merge = (left, right) => {
-  const res = [];
-  while (left.length && right.length) {
-    if (left[0] > right[0]) {
-      res.push(right.shift());
-    } else {
-      res.push(left.shift());
+const greedy = (g, s) => {
+  g = g.sort((a, b) => b - a);
+  s = s.sort((a, b) => b - a);
+  let cookie = 0;
+  let child = 0;
+  let num = 0;
+  while (cookie < g.length && child < s.length) {
+    if (g[cookie] <= s[child]) {
+      num++;
+      child++;
     }
+    cookie++;
   }
-  while (left.length) {
-    res.push(left.shift());
-  }
-  while (right.length) {
-    res.push(right.shift());
-  }
-  return res;
+  return num;
 };
 
-const slideWindow = k => {
-  let left = 1;
-  let right = 1;
-  let sum = 0;
-  const res = [];
-  while (left < k / 2) {
-    if (sum < k) {
-      sum += right;
-      right++;
-    } else if (sum > k) {
-      sum -= left;
-      left++;
-    } else {
-      const tem = [];
-      for (let i = left; i < right; i++) {
-        tem.push(i);
-      }
-      res.push(tem);
-      sum -= left;
-      left++;
-    }
+function TreeNode(val) {
+  this.val = val;
+  this.left = this.right = null;
+}
+
+const rebuildTree = (pre, mid) => {
+  if (!pre) {
+    return null;
   }
-  return res;
-};
-
-const bubbleSort = array => {
-  for (let i = 0; i < array.length; i++) {
-    let flag = true;
-    for (let j = 0; j < array.length - i - 1; j++) {
-      if (array[j] > array[j + 1]) {
-        [array[j], array[j + 1]] = [array[j + 1], array[j]];
-        flag = false;
-      }
-    }
-    if (flag) {
-      break;
-    }
+  const root = pre[0];
+  if (pre.length === 1) {
+    return new TreeNode(root);
   }
-  return array;
-};
-
-const quickSort = array => {
-  if (array.length < 2) {
-    return array;
-  }
-  let target = array[0];
-  const left = [];
-  const right = [];
-  for (let i = 0; i < array.length; i++) {
-    if (array[i] > target) {
-      right.push(array[i]);
-    } else {
-      left.push(array[i]);
-    }
-  }
-
-  return [...quickSort(left), target, ...quickSort(right)];
-};
-
-const insertSort = array => {
-  for (let i = 0; i < array.length; i++) {
-    let max_index = i;
-    for (let j = i - 1; j >= 0; j--) {
-      if (array[max_index] < array[j]) {
-        [array[j], array[max_index]] = [array[max_index], array[j]];
-        max_index = j;
-      } else {
-        break;
-      }
-    }
-  }
-  return array;
-};
-
-const createStore = (enhancer, reducer) => {
-  if (typeof enhancer !== undefined) {
-    return enhancer(createStore)(reducer);
-  }
-  const licenses = [];
-  let state = null;
-
-  const subScript = license => {
-    licenses.push(license);
-  };
-
-  const getState = () => state;
-
-  const dispatch = action => {
-    state = reducer(action, state);
-    licenses.forEach(item => item());
-  };
-
-  return { subScript, getState, dispatch };
+  const index = mid.indexOf(root);
+  const preLeft = pre.slice(1, index + 1);
+  const preRight = pre.slice(index + 1);
+  const midLeft = mid.slice(0, index);
+  const midRight = mid.slice(index + 1);
+  const node = new TreeNode(root);
+  node.left = rebuildTree(preLeft, midLeft);
+  node.right = rebuildTree(preRight, midRight);
+  return node;
 };

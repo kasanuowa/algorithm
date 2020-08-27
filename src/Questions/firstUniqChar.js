@@ -1,5 +1,5 @@
 const firstUniqChar1 = s => {
-  for (const key in new Set(s)) {
+  for (let key of new Set(s)) {
     if (s.match(new RegExp(key, "g")).length === 1) {
       return key;
     }
