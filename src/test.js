@@ -37,3 +37,31 @@ const rebuildTree = (pre, mid) => {
   node.right = rebuildTree(preRight, midRight);
   return node;
 };
+
+const insertSort = (array) => {
+  for (let i = 0; i < array.length; i++) {
+    let current = i;
+    for (let j = i - 1; j >= 0; j--) {
+      if (array[current] < array[j]) {
+        [array[current], array[j]] = [array[j], array[current]];
+        current = j;
+      } else {
+        break;
+      }
+    }
+  }
+  return array;
+};
+
+const selectSort = (array) => {
+  for (let i = 0; i < array.length; i++) {
+    let min = i;
+    for (let j = i + 1; j < array.length; j++) {
+      if (array[i] > array[j]) {
+        min = j;
+      }
+    }
+    [array[min], array[i]] = [array[i], array[min]];
+  }
+  return array;
+};
