@@ -15,12 +15,12 @@ var fib1 = function (n) {
   return b;
 };
 
-const fib2 = n => {
+const fib2 = (n) => {
   const array = Array(n + 1).fill(0);
   array[0] = 0;
   array[1] = 1;
   for (let i = 2; i < array.length; i++) {
-    array[i] = array[i - 1] + array[i - 2];
+    array[i] = (array[i - 1] + array[i - 2]) % 1000000007;
   }
   return array[n];
 };

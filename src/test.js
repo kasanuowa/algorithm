@@ -1,50 +1,26 @@
-const greedy = (g, s) => {
-  g = g.sort((a, b) => b - a);
-  s = s.sort((a, b) => b - a);
-  let cookie = 0;
-  let child = 0;
-  let num = 0;
-  while (cookie < g.length && child < s.length) {
-    if (g[cookie] <= s[child]) {
-      num++;
-      child++;
+const bubbleSort = (array) => {
+  for (let i = 0; i < array.length; i++) {
+    let flag = true;
+    for (let j = 0; j < array.length - 1 - i; j++) {
+      if (array[j] > array[j + 1]) {
+        [array[j], array[j + 1]] = [array[j + 1], [array[j]]];
+        flag = false;
+      }
     }
-    cookie++;
+    if (flag) {
+      break;
+    }
   }
-  return num;
-};
-
-function TreeNode(val) {
-  this.val = val;
-  this.left = this.right = null;
-}
-
-const rebuildTree = (pre, mid) => {
-  if (!pre) {
-    return null;
-  }
-  const root = pre[0];
-  if (pre.length === 1) {
-    return new TreeNode(root);
-  }
-  const index = mid.indexOf(root);
-  const preLeft = pre.slice(1, index + 1);
-  const preRight = pre.slice(index + 1);
-  const midLeft = mid.slice(0, index);
-  const midRight = mid.slice(index + 1);
-  const node = new TreeNode(root);
-  node.left = rebuildTree(preLeft, midLeft);
-  node.right = rebuildTree(preRight, midRight);
-  return node;
+  return array;
 };
 
 const insertSort = (array) => {
   for (let i = 0; i < array.length; i++) {
-    let current = i;
+    let target = i;
     for (let j = i - 1; j >= 0; j--) {
-      if (array[current] < array[j]) {
-        [array[current], array[j]] = [array[j], array[current]];
-        current = j;
+      if (array[target] < array[j]) {
+        [array[j], array[target]] = [array[target], array[j]];
+        target = j;
       } else {
         break;
       }
@@ -53,15 +29,61 @@ const insertSort = (array) => {
   return array;
 };
 
+const quickSort = (array) => {
+  if (array.length < 2) {
+    return array;
+  }
+  let target = array[0];
+  const left = [];
+  const right = [];
+  for (let i = 1; i < array.length; i++) {
+    if (array[i] < target) {
+      left.push(array[i]);
+    } else {
+      right.push(array[i]);
+    }
+  }
+  return [...quickSort(left), target, ...quickSort(right)];
+};
+
+const merge = (left, right) => {
+  const res = [];
+  while (left.length && right.length) {
+    if (left[0] > right[0]) {
+      res.push(right.shift());
+    } else {
+      res.push(left.shift());
+    }
+  }
+
+  while (left.length) {
+    res.push(left.shift());
+  }
+  while (right.length) {
+    res.push(right.shift());
+  }
+  return res;
+};
+
+const mergeSort = (array) => {
+  if (array.length < 2) {
+    return array;
+  }
+  let index = Math.floor(array.length / 2);
+  let left = array.slice(0, index);
+  let right = array.slice(index);
+  return merge(mergeSort(left), mergeSort(right));
+};
+
 const selectSort = (array) => {
   for (let i = 0; i < array.length; i++) {
-    let min = i;
+    const min_index = i;
     for (let j = i + 1; j < array.length; j++) {
-      if (array[i] > array[j]) {
-        min = j;
+      if (array[min_index > array[j]]) {
+        min_index = j;
       }
     }
-    [array[min], array[i]] = [array[i], array[min]];
+    [array[min_index], array[i]] = [array[i], array[min_index]];
   }
   return array;
 };
