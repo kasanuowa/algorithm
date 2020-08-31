@@ -1,4 +1,4 @@
-const bubbleSort = (array) => {
+const bubbleSort = array => {
   for (let i = 0; i < array.length; i++) {
     let flag = true;
     for (let j = 0; j < array.length - 1 - i; j++) {
@@ -14,7 +14,7 @@ const bubbleSort = (array) => {
   return array;
 };
 
-const insertSort = (array) => {
+const insertSort = array => {
   for (let i = 0; i < array.length; i++) {
     let target = i;
     for (let j = i - 1; j >= 0; j--) {
@@ -29,7 +29,7 @@ const insertSort = (array) => {
   return array;
 };
 
-const quickSort = (array) => {
+const quickSort = array => {
   if (array.length < 2) {
     return array;
   }
@@ -65,7 +65,7 @@ const merge = (left, right) => {
   return res;
 };
 
-const mergeSort = (array) => {
+const mergeSort = array => {
   if (array.length < 2) {
     return array;
   }
@@ -75,9 +75,9 @@ const mergeSort = (array) => {
   return merge(mergeSort(left), mergeSort(right));
 };
 
-const selectSort = (array) => {
+const selectSort = array => {
   for (let i = 0; i < array.length; i++) {
-    const min_index = i;
+    let min_index = i;
     for (let j = i + 1; j < array.length; j++) {
       if (array[min_index > array[j]]) {
         min_index = j;
@@ -86,4 +86,29 @@ const selectSort = (array) => {
     [array[min_index], array[i]] = [array[i], array[min_index]];
   }
   return array;
+};
+
+const debounce = (fn, delay) => {
+  let timer = null;
+  return function () {
+    const args = [].slice.apply(arguments);
+    timer = setTimeout(() => {
+      timer && clearTimeout(timer);
+      fn(...args);
+    }, delay);
+  };
+};
+
+const throttle = (fn, delay) => {
+  let timer = null;
+  return function () {
+    const args = [].slice.apply(arguments);
+    if (!timer) {
+      timer = setTimeout(() => {
+        fn(...args);
+        clearTimeout(timer);
+        timer = null;
+      }, delay);
+    }
+  };
 };
