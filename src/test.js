@@ -1,4 +1,4 @@
-const bubbleSort = array => {
+const bubbleSort = (array) => {
   for (let i = 0; i < array.length; i++) {
     let flag = true;
     for (let j = 0; j < array.length - 1 - i; j++) {
@@ -14,7 +14,7 @@ const bubbleSort = array => {
   return array;
 };
 
-const insertSort = array => {
+const insertSort = (array) => {
   for (let i = 0; i < array.length; i++) {
     let target = i;
     for (let j = i - 1; j >= 0; j--) {
@@ -29,7 +29,7 @@ const insertSort = array => {
   return array;
 };
 
-const quickSort = array => {
+const quickSort = (array) => {
   if (array.length < 2) {
     return array;
   }
@@ -65,7 +65,7 @@ const merge = (left, right) => {
   return res;
 };
 
-const mergeSort = array => {
+const mergeSort = (array) => {
   if (array.length < 2) {
     return array;
   }
@@ -75,7 +75,7 @@ const mergeSort = array => {
   return merge(mergeSort(left), mergeSort(right));
 };
 
-const selectSort = array => {
+const selectSort = (array) => {
   for (let i = 0; i < array.length; i++) {
     let min_index = i;
     for (let j = i + 1; j < array.length; j++) {
@@ -112,3 +112,88 @@ const throttle = (fn, delay) => {
     }
   };
 };
+
+function MyPromise(executor) {
+  this.status = "PENDING";
+  this.value = null;
+  this.reason = null;
+
+  this.resolves = [];
+  this.rejects = [];
+
+  this.resolve = (value) => {
+    if (this.status === "PENDING") {
+      this.status = "RESOLVED";
+      this.value = value;
+    }
+    while (resolves.length) {
+      const tem = resolves.shift();
+      tem(value);
+    }
+  };
+
+  this.reject = (reason) => {
+    if (this.status === "PENDING") {
+      this.status = "REJECTED";
+      this.reason = reason;
+    }
+    while (rejects.length) {
+      const tem = rejects.shift();
+      tem(value);
+    }
+  };
+
+  this.then = (resolve, reject) => {
+    resolve = typeof resolve === "function" ? resolve : (v) => v;
+    reject =
+      typeof reject === "function"
+        ? reject
+        : (e) => {
+            throw new Error(e);
+          };
+
+    return MyPromise((resolveFn, rejectFn) => {
+      const fulfilled = (value) => {
+        try {
+          const res = resolve(value);
+          res instanceof MyPromise
+            ? MyPromise.then(resolveFn, rejectFn)
+            : resolveFn(res);
+        } catch (error) {
+          reject(error);
+        }
+      };
+
+      const rejected = (reason) => {
+        try {
+          const res = reject(reason);
+          res instanceof MyPromise
+            ? MyPromise.then(resolveFn, rejectFn)
+            : rejectFn(res);
+        } catch (error) {
+          reject(error);
+        }
+      };
+
+      switch (this.status) {
+        case "RESOLVED":
+          fulfilled(this.value);
+          break;
+        case "REJECTED":
+          rejected(this.reason);
+          break;
+        case "PENDING":
+        default:
+          this.resolves.push(fulfilled);
+          this.rejects.push(rejected);
+          break;
+      }
+    });
+  };
+
+  try {
+    executor(this.resolve, this.reject);
+  } catch (error) {
+    this.reject(error);
+  }
+}
