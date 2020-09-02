@@ -1,4 +1,4 @@
-const bubbleSort = array => {
+const bubbleSort = (array) => {
   for (let i = 0; i < array.length; i++) {
     let flag = true;
     for (let j = 0; j < array.length - 1 - i; j++) {
@@ -14,7 +14,7 @@ const bubbleSort = array => {
   return array;
 };
 
-const insertSort = array => {
+const insertSort = (array) => {
   for (let i = 0; i < array.length; i++) {
     let target = i;
     for (let j = i - 1; j >= 0; j--) {
@@ -29,7 +29,7 @@ const insertSort = array => {
   return array;
 };
 
-const quickSort = array => {
+const quickSort = (array) => {
   if (array.length < 2) {
     return array;
   }
@@ -65,7 +65,7 @@ const merge = (left, right) => {
   return res;
 };
 
-const mergeSort = array => {
+const mergeSort = (array) => {
   if (array.length < 2) {
     return array;
   }
@@ -75,7 +75,7 @@ const mergeSort = array => {
   return merge(mergeSort(left), mergeSort(right));
 };
 
-const selectSort = array => {
+const selectSort = (array) => {
   for (let i = 0; i < array.length; i++) {
     let min_index = i;
     for (let j = i + 1; j < array.length; j++) {
@@ -121,7 +121,7 @@ function MyPromise(executor) {
   this.resolves = [];
   this.rejects = [];
 
-  this.resolve = value => {
+  this.resolve = (value) => {
     if (this.status === "PENDING") {
       this.status = "RESOLVED";
       this.value = value;
@@ -132,7 +132,7 @@ function MyPromise(executor) {
     }
   };
 
-  this.reject = reason => {
+  this.reject = (reason) => {
     if (this.status === "PENDING") {
       this.status = "REJECTED";
       this.reason = reason;
@@ -144,16 +144,16 @@ function MyPromise(executor) {
   };
 
   this.then = (resolve, reject) => {
-    resolve = typeof resolve === "function" ? resolve : v => v;
+    resolve = typeof resolve === "function" ? resolve : (v) => v;
     reject =
       typeof reject === "function"
         ? reject
-        : e => {
+        : (e) => {
             throw new Error(e);
           };
 
     return MyPromise((resolveFn, rejectFn) => {
-      const fulfilled = value => {
+      const fulfilled = (value) => {
         try {
           const res = resolve(value);
           res instanceof MyPromise
@@ -164,7 +164,7 @@ function MyPromise(executor) {
         }
       };
 
-      const rejected = reason => {
+      const rejected = (reason) => {
         try {
           const res = reject(reason);
           res instanceof MyPromise
@@ -212,4 +212,41 @@ const greedy = (g, s) => {
     cookie++;
   }
   return num;
+};
+
+var cuttingRope = function (n) {
+  if (n === 2) return 1;
+  if (n === 3) return 2;
+  let a = ~~(n / 3);
+  let b = n % 3;
+  if (b === 0) return Math.pow(3, a);
+  if (b === 1) return Math.pow(3, a - 1) * 4;
+  if (b === 2) return Math.pow(3, a) * 2;
+};
+
+const findContinuousSequence = (target) => {
+  let l = 1;
+  let r = 1;
+  let res = [];
+  let sum = 0;
+  while (l < target / 2) {
+    if (sum < target) {
+      sum += r;
+      r++;
+    }
+    if (sum > target) {
+      sum -= l;
+      l++;
+    }
+    if (sum === target) {
+      let tem = [];
+      for (let i = l; l < r; i++) {
+        tem.push(i);
+      }
+      res.push(tem);
+      sum -= l;
+      l++;
+    }
+    return res;
+  }
 };
