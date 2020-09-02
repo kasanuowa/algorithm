@@ -1,5 +1,3 @@
-const { link } = require("fs-extra");
-
 const maxSlidingWindow = (array, k) => {
   if (!array.length) {
     return [];
@@ -14,3 +12,5 @@ const maxSlidingWindow = (array, k) => {
   }
   return res;
 };
+
+export default maxSlidingWindow;

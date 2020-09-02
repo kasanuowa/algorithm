@@ -1,4 +1,4 @@
-const slideWindow = target => {
+const findContinuousSequence = target => {
   let l = 1;
   let r = 1;
   let res = [];
@@ -22,3 +22,5 @@ const slideWindow = target => {
   }
   return res;
 };
+
+export default findContinuousSequence;
