@@ -52,3 +52,88 @@ const myInstanceOf = (obj, Construe) => {
     _pro_ = Object.getPrototypeOf(_pro_);
   }
 };
+
+const MyPromise = function (executor) {
+  this.status = "PENDING";
+  this.value = null;
+  this.reason = null;
+
+  this.resolves = [];
+  this.rejects = [];
+
+  this.resolve = value => {
+    if (this.status === "PENDING") {
+      this.status = "RESOLVE";
+      this.value = value;
+    }
+    while (this.resolves.length) {
+      const tem = this.resolves.shift();
+      tem(value);
+    }
+  };
+
+  this.reject = reason => {
+    if (this.status === "PENDING") {
+      this.status = "REJECT";
+      this.reason = reason;
+    }
+    while (this.rejects.length) {
+      const tem = this.rejects.shift();
+      tem(reason);
+    }
+  };
+
+  this.then = (resolve, reject) => {
+    resolve = typeof resolve === "function" ? resolve : val => val;
+    reject =
+      typeof reject === "function"
+        ? reject
+        : error => {
+            throw new Error(error);
+          };
+
+    return new MyPromise((resolveFn, rejectFn) => {
+      const fulfilled = value => {
+        try {
+          const res = resolve(value);
+          res instanceof MyPromise
+            ? MyPromise(resolveFn, rejectFn)
+            : resolveFn(value);
+        } catch (error) {
+          reject(error);
+        }
+      };
+
+      const rejected = reason => {
+        try {
+          const res = reject(reason);
+          res instanceof MyPromise
+            ? MyPromise(resolveFn, rejectFn)
+            : rejectFn(reason);
+        } catch (error) {
+          reject(error);
+        }
+      };
+
+      switch (this.status) {
+        case "RESOLVE":
+          fulfilled(this.value);
+          break;
+        case "REJECT":
+          rejected(this.reason);
+          break;
+        case "PENDING":
+        default:
+          this.resolves.push(fulfilled);
+          this.rejects.push(rejected);
+          break;
+      }
+    });
+  };
+
+  try {
+    executor(this.resolve, this.reject);
+  } catch (error) {
+    this.rejects.push(error);
+  }
+};
