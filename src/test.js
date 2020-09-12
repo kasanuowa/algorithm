@@ -61,7 +61,7 @@ const MyPromise = function (executor) {
   this.resolves = [];
   this.rejects = [];
 
-  this.resolve = value => {
+  this.resolve = (value) => {
     if (this.status === "PENDING") {
       this.status = "RESOLVE";
       this.value = value;
@@ -72,7 +72,7 @@ const MyPromise = function (executor) {
     }
   };
 
-  this.reject = reason => {
+  this.reject = (reason) => {
     if (this.status === "PENDING") {
       this.status = "REJECT";
       this.reason = reason;
@@ -84,16 +84,16 @@ const MyPromise = function (executor) {
   };
 
   this.then = (resolve, reject) => {
-    resolve = typeof resolve === "function" ? resolve : val => val;
+    resolve = typeof resolve === "function" ? resolve : (val) => val;
     reject =
       typeof reject === "function"
         ? reject
-        : error => {
+        : (error) => {
             throw new Error(error);
           };
 
     return new MyPromise((resolveFn, rejectFn) => {
-      const fulfilled = value => {
+      const fulfilled = (value) => {
         try {
           const res = resolve(value);
           res instanceof MyPromise
@@ -104,7 +104,7 @@ const MyPromise = function (executor) {
         }
       };
 
-      const rejected = reason => {
+      const rejected = (reason) => {
         try {
           const res = reject(reason);
           res instanceof MyPromise
@@ -138,7 +138,7 @@ const MyPromise = function (executor) {
   }
 };
 
-const bubbleSort = array => {
+const bubbleSort = (array) => {
   for (let i = 0; i < array.length; i++) {
     let flag = true;
     for (let j = 0; j < array.length - i - 1; j++) {
@@ -153,7 +153,7 @@ const bubbleSort = array => {
   }
 };
 
-const quickSort = array => {
+const quickSort = (array) => {
   if (array.length < 2) {
     return array;
   }
@@ -170,7 +170,7 @@ const quickSort = array => {
   return [...quickSort(left), target, ...quickSort(right)];
 };
 
-const insertSort = array => {
+const insertSort = (array) => {
   for (let i = 0; i < array.length; i++) {
     let target = i;
     for (let j = i - 1; j >= 0; j--) {
@@ -203,7 +203,7 @@ const merge = (left, right) => {
   return res;
 };
 
-const mergeSort = array => {
+const mergeSort = (array) => {
   if (array.length < 2) {
     return array;
   }
@@ -213,7 +213,7 @@ const mergeSort = array => {
   return merge(mergeSort(left), mergeSort(right));
 };
 
-const selectSort = array => {
+const selectSort = (array) => {
   for (let i = 0; i < array.length; i++) {
     let min_index = i;
     for (let j = i + 1; j < array.length; j++) {
@@ -225,3 +225,36 @@ const selectSort = array => {
   }
   return array;
 };
+
+const createStore = (reducer, enhance) => {
+  if (typeof enhance !== "undefined") {
+    return enhance(createStore)(reducer);
+  }
+
+  let state = null;
+  let subscripts = [];
+
+  const subscript = (item) => {
+    subscripts.push(item);
+  };
+
+  const getState = () => state;
+
+  const dispatch = (action) => {
+    state = reducer(action, state);
+    subscripts.forEach((i) => i());
+  };
+
+  return { subscript, getState, dispatch };
+};
+
+const createThunk = () => {
+  return (getState, dispatch) => (next) => (action) => {
+    if (typeof action === "function") {
+      return action(getState, dispatch);
+    }
+    return next(action);
+  };
+};
+
+const reduxThunk = createThunk();
