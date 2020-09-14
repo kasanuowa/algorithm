@@ -24,5 +24,5 @@ getName(); // 4
 Foo().getName(); //this is window 1
 getName(); // 1
 new Foo.getName(); //2
-new Foo().getName(); // this is window 1
-new new Foo().getName();
+new Foo().getName(); // this is Foo  3
+new new Foo().getName(); // this is Foo  3  Foo.getName()
