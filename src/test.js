@@ -113,3 +113,40 @@ const mergeSort = (array) => {
   let right = array.slice(index);
   return mergeSort(mergeSort(left), mergeSort(right));
 };
+
+Function.prototype.myCall = function (Construe, ...args) {
+  if (this === Function.prototype) {
+    return null;
+  }
+  const s = Symbol();
+  Construe[s] = this;
+  const res = Construe[s](...args);
+  delete Construe[s];
+  return res;
+};
+
+Function.prototype.myBind = function (Construe, ...args) {
+  if (this === Function.prototype) {
+    return null;
+  }
+  const _this = this;
+  return function () {
+    _this.apply(Construe, ...args);
+  };
+};
+
+function myNew(Construe) {
+  if (typeof Construe !== "function") {
+    throw new Error("666");
+  }
+  const obj = Object.create(Construe.prototype);
+  const args = [].slice.apply(arguments, 1);
+  const res = Construe.apply(obj, ...args);
+  const isObject = typeof res === "object" && res !== null;
+  const isFunction = typeof res === "function";
+  if (isObject || isFunction) {
+    return res;
+  } else {
+    return obj;
+  }
+}
