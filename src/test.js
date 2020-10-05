@@ -236,3 +236,30 @@ function MyPromise(executor) {
     this.reject(error);
   }
 }
+
+const findContinuousSequence = (n) => {
+  let left = 1;
+  let right = 1;
+  let sum = 0;
+  let res = [];
+  while (left < n / 2) {
+    if (sum < n) {
+      sum += right;
+      right++;
+    }
+    if (sum > n) {
+      sum -= left;
+      left++;
+    }
+    if (sum === n) {
+      let tem = [];
+      for (let i = left; i < right; i++) {
+        tem.push(i);
+      }
+      res.push(tem);
+      sum -= left;
+      left++;
+    }
+  }
+  return res;
+};
