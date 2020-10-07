@@ -273,3 +273,25 @@ const fib = (n) => {
   }
   return arr[n];
 };
+
+const createStore = (reducer, enhancer) => {
+  if (typeof enhancer === "function") {
+    return enhancer(createStore)(reducer);
+  }
+
+  let listeners = [];
+  let state = null;
+
+  const getState = () => state;
+
+  const subScript = (listener) => {
+    listeners.push(listener);
+  };
+
+  const dispatch = (action) => {
+    state = reducer(action, state);
+    listeners.forEach((item) => item());
+  };
+
+  return { getState, subScript };
+};
