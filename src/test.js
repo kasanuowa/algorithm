@@ -293,5 +293,14 @@ const createStore = (reducer, enhancer) => {
     listeners.forEach((item) => item());
   };
 
-  return { getState, subScript };
+  return { getState, subScript, dispatch };
+};
+
+const createThunk = () => {
+  return (dispatch, getState) => (next) => (action) => {
+    if (typeof action === "function") {
+      action(dispatch, getState);
+    }
+    return next(action);
+  };
 };
