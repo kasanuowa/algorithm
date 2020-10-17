@@ -304,3 +304,30 @@ const createThunk = () => {
     return next(action);
   };
 };
+
+const slideWindow = (n) => {
+  let left = 1;
+  let right = 1;
+  let res = [];
+  let target = 0;
+  while (left < n / 2) {
+    if (target < n) {
+      target += right;
+      right++;
+    }
+    if (target > n) {
+      target -= left;
+      left++;
+    }
+    if (target === n) {
+      let tem = [];
+      for (let i = left; i < right; i++) {
+        tem.push(i);
+      }
+      res.push(tem);
+      target -= left;
+      left++;
+    }
+  }
+  return res;
+};
