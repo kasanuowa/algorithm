@@ -1,0 +1,1 @@
+// 一个数 num>>1 等价于 Math.floor(num/2)
